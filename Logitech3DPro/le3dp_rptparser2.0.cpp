@@ -4,8 +4,12 @@ JoystickReportParser::JoystickReportParser(JoystickEvents *evt) :
 	joyEvents(evt)
 {}
 
+unsigned long lastUpdateTime = 0;
+
 void JoystickReportParser::Parse(USBHID *hid, bool is_rpt_id, uint8_t len, uint8_t *buf)
 {
+  lastUpdateTime = millis(); // Mark the time of the last update
+
 	bool match = true;
 
 	// Checking if there are changes in report since the method was last called
@@ -34,8 +38,8 @@ void JoystickEvents::OnGamePadChanged(const GamePadEventData *evt)
   m_Twist_Val = evt->twist;
   m_Slider_Val = map(evt->slider, 255, 0, 0, 250);
   m_Joy_Button = 0;
-  m_Joy_Button = 1 + log(evt->buttons_a)/log(2);
-  if (evt->buttons_b) m_Joy_Button = 9 + log(evt->buttons_b)/log(2);
+  if (evt->buttons_a) m_Joy_Button = 1 + log(evt->buttons_a) / log(2);
+  if (evt->buttons_b) m_Joy_Button = 9 + log(evt->buttons_b) / log(2);
 }
 
 void JoystickEvents::PrintValues()

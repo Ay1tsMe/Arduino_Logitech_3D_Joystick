@@ -3,6 +3,8 @@
 
 #include <usbhid.h>
 
+extern unsigned long lastUpdateTime;
+
 struct GamePadEventData
 {
   union { //axes and hut switch

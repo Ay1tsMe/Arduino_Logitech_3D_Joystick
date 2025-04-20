@@ -46,5 +46,12 @@ void loop()
   Usb.Task();                                                    //Use to read joystick input to controller
   JoyEvents.PrintValues();                                       //Returns joystick values to user
   JoyEvents.GetValues(Xval, Yval, Hat, Twist, Slider, Button);   //Copies joystick values to user
+
+  // Check for freeze condition
+  if (millis() - lastUpdateTime > 1000) { // >1 second since last update
+    Serial.println("No joystick data received. Resetting ESP32...");
+    delay(100); // Give Serial a chance to flush
+    esp_restart(); // Restart the ESP32
+  }
 }
 
